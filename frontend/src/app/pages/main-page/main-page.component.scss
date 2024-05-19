@@ -1,0 +1,33 @@
+.highlight {
+  background-color: #e21a1a;
+  color: white;
+}
+.file-target {
+  min-width: 40rem;
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem 1.7rem;
+  input{
+    opacity: 0;
+  }
+  .form_for_file_{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: white;
+    border : dashed 2px #0000006e;
+    height: 25rem;
+    margin-bottom: 1rem;
+    &description{
+      position: absolute;
+      text-align: center;
+      align-self: center;
+      width: 100%;
+      font-size: 40px !important;
+      color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+}

@@ -1,0 +1,37 @@
+<div style="display:flex;     height: 80vh;flex-direction: column; gap: .2rem; padding: 2rem 1rem; align-items: start;background-color: #e9eaed">
+    <div style="display:flex; align-items: baseline; justify-content: space-between; width: 100%">
+        <h2 mat-dialog-title>Загрузка файла для анализа</h2>
+        <button mat-icon-button color="primary" (click)="closeDialog()"><mat-icon style="transform: scale(1.3)" color="primary">clear</mat-icon></button>
+    </div>
+    <div style="align-self: center; height: calc(100% - 130px); background-color: #e9eaed; display: flex; justify-content: space-between; gap: 2rem">
+        <div style="  height: 100%; display: flex; flex-direction: column; gap: 2rem; min-width: 200px; width:100%;">
+            <section *ngIf="!loading2()" class="file-target" style="align-self: center">
+                <p style="color: black; text-align: center">Перетащите файл в область ниже или кликните по ней</p>
+                <div class="form_for_file_" style="margin-top: 10px">
+                    <p class="form_for_file_description">file</p>
+                    <input style="width: 100%; height: 100%;" type="file" name="file" (change)="getFile($event)">
+                </div>
+                <div *ngIf="!!file" style="display:flex; align-items: center; gap: 10px">
+                    <mat-icon>attach_file</mat-icon>
+                    <h3 style="color: black" [ngStyle]="{'word-wrap': 'break-word', 'margin-bottom':'1rem'}">{{file.name}}</h3>
+                </div>
+                <h3 *ngIf="errorWithExtension" [ngStyle]="{'color':'red', 'margin-bottom':'1rem'}">Неверный формат файла. Доступны: zip, wav и mp3. Максимальный размер файла: 20МБ</h3>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center">
+                    <button style="height: 60px; width: 400px" mat-raised-button color="primary" [disabled]="file==null" (click)="uploadFile()"><h3>Загрузить файл</h3></button>
+
+                    <!--                <button mat-raised-button [disabled]="file==null" (click)="uploadFile()" color="primary" type="submit">Загрузить файл</button>-->
+                    <button mat-button style="height: 60px; width: 200px" (click)="cancel()" color="primary">Отмена</button>
+                </div>
+            </section>
+            <mat-progress-spinner  *ngIf="loading2()"
+                                   style="margin-top: 180px; align-self: center;"
+                                   color="primary"
+                                   mode="indeterminate"
+                                   [diameter]="60"
+                                   [strokeWidth]="6"
+                                   [value]="80">
+            </mat-progress-spinner>
+
+        </div>
+    </div>
+</div>

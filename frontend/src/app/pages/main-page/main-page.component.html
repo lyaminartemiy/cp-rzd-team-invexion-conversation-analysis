@@ -1,0 +1,127 @@
+<div>
+    <app-header style="position:fixed; z-index: 5" (goToUploadFile)="getNegotiations()"></app-header>
+</div>
+<div #main id="main"style="height: 340px; padding-top: 65px;">
+    <h1 style="margin-top: 220px; margin-left:105px; color: white; position: absolute">Анализатор <span class="highlight">служебных переговоров</span></h1>
+    <img src="assets/1730737.jpeg" style="width: 100%; height: 340px">
+</div>
+<!--<div style=" background-color: #e9eaed; padding: 2rem 105px; display: flex; justify-content: space-between; gap: 2rem">-->
+<!--    <div *ngIf="allMetrics" style="  display: flex; height: fit-content;flex-direction: column; gap: 1rem; min-width: 200px; width: 50%;-->
+<!--    min-height: 300px;-->
+<!--    background-color: #fff;-->
+<!--    position: relative;-->
+<!--    overflow: hidden;-->
+<!--    padding: 20px;">-->
+<!--        <h2>Текущие метрики</h2>-->
+<!--        <p *ngFor="let i of allMetrics">{{ i.metric.title }}: {{i.value}}</p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div  #first id="first" style=" margin-top: 20px;
+    padding-left: 105px; padding-right: 105px; background-color: #e9eaed; display: flex; justify-content: space-between; gap: 2rem">
+    <div style=" 
+    position: relative; height: 330px; display: flex; flex-direction: column; min-width: 200px; width:100%;"> 
+    <h2> Сводная таблица</h2>
+        <div *ngIf="!loading()" style="min-height: 50px; margin-top: 1.5rem; display: flex; align-items: center; justify-content: space-between">
+            <mat-checkbox color="primary" (change)="changeValue1($event)"><p>Выбрать все</p></mat-checkbox>
+            <button *ngIf="checkActive()" style=" min-height: 50px; width: 300px" mat-raised-button color="primary" (click)="goToModel()"><h3>Подробнее по выделенным</h3></button>
+        </div>
+        <div *ngIf="size>=20 && !loading()" style="display: flex; width: 100%; align-items: center; margin-top: 15px; justify-content: end;
+  gap: 30px">
+            <pagination-controls previousLabel="←" nextLabel="→" (pageChange)="paginate($event, filteredNegotiations)"></pagination-controls>
+            <mat-form-field appearance="outline" style="width: 250px">
+                <mat-label> Файлов на страницу:</mat-label>
+                <mat-select (selectionChange)="checkEvent($event)" [(value)]="size" (valueChange)="paginate(pageIndex, filteredNegotiations)">
+                    <mat-option [value]="5">5</mat-option>
+                    <mat-option [value]="10">10</mat-option>
+                    <mat-option [value]="20">20</mat-option>
+                    <mat-option [value]="50">50</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p>Всего: {{negotiations.length}}</p>
+        </div>
+        <mat-form-field *ngIf=" !loading()" style="margin-top: 10px">
+            <mat-label>Filter</mat-label>
+            <input matInput [formControl]="filterInput">
+        </mat-form-field>
+        <table *ngIf="!loading()" style="    box-shadow: none;
+    background-color: rgba(250, 250, 250, 0.8); margin-top: 1rem" mat-table [dataSource]="dataSource | paginate: {itemsPerPage: size, currentPage: pageIndex, totalItems: negotiations.length}" class="mat-elevation-z5">
+            <ng-container matColumnDef="Выбрать">
+                <th mat-header-cell *matHeaderCellDef><b>Выбрать</b></th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-checkbox [(ngModel)]="element.isSelected"  color="primary" (change)="changeValue($event, element)"></mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Файл">
+                <th mat-header-cell *matHeaderCellDef><b>Файл</b></th>
+                <td mat-cell *matCellDef="let element"><p>{{ element.fileName }}</p></td>
+            </ng-container>
+            <ng-container matColumnDef="Тип файла">
+                <th mat-header-cell *matHeaderCellDef><b>Тип файла</b></th>
+                <td mat-cell *matCellDef="let element"> <p>{{ element.fileType }} </p></td>
+            </ng-container>
+            <ng-container matColumnDef="Дата загрузки">
+                <th mat-header-cell *matHeaderCellDef><b>Дата загрузки</b></th>
+                <td mat-cell *matCellDef="let element"><p>{{ element.createdAt  | date:'dd.MM.yyyy HH:mm' }}</p></td>
+            </ng-container>
+            <ng-container matColumnDef="Проанализировано">
+                <th mat-header-cell *matHeaderCellDef><b>Проанализировано</b></th>
+                <td mat-cell *matCellDef="let element"><p>{{ element.isAnalyzed ? 'Да' : 'Нет'}} </p></td>
+            </ng-container>
+            <ng-container matColumnDef="Действие">
+                <th mat-header-cell   *matHeaderCellDef><b>Действие</b></th>
+                <td mat-cell *matCellDef="let row;" style=";color: #1b3dff; cursor: pointer">
+                    <button mat-stroked-button color="primary" (click)="checkOne(row.id)">Посмотреть</button>
+<!--                            <button mat-raised-button color="primary"><h3>Посмотреть</h3></button>-->
+                </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div *ngIf="!loading()" style="display: flex; width: 100%; align-items: center; margin-top: 15px; justify-content: end;
+  gap: 30px">
+            <pagination-controls previousLabel="←" nextLabel="→" (pageChange)="paginate($event, filteredNegotiations)"></pagination-controls>
+            <mat-form-field appearance="outline" style="width: 250px">
+                <mat-label> Файлов на страницу:</mat-label>
+                <mat-select (selectionChange)="checkEvent($event)" [(value)]="size" (valueChange)="paginate(pageIndex, filteredNegotiations)">
+                    <mat-option [value]="5">5</mat-option>
+                    <mat-option [value]="10">10</mat-option>
+                    <mat-option [value]="20">20</mat-option>
+                    <mat-option [value]="50">50</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p>Всего: {{negotiations.length}}</p>
+        </div>
+        <mat-progress-spinner  *ngIf="loading()"
+                style="margin-top: 180px; align-self: center;"
+                color="primary"
+                mode="indeterminate"
+                [diameter]="60"
+                [strokeWidth]="6"
+                [value]="80">
+        </mat-progress-spinner>
+    </div>
+</div>
+
+<!--<div style=" height: 100vh; background-color: rgba(250, 250, 250, 0.8); padding: 2rem 105px">-->
+<!--    <div style="display: flex; flex-direction: column; gap: 2rem">-->
+<!--        <h1>Заголовок 1</h1>-->
+<!--        <h2>Заголовок 2</h2>-->
+<!--        <p>Параграф</p>-->
+<!--        <a>Ссылка</a>-->
+<!--        <button style="height: 60px; width: 200px" mat-raised-button color="primary"><h3>КНОПКА</h3></button>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div>-->
+<!--      <span *ngFor="let interval of intervals">-->
+<!--        <span>{{ text.substring(lastEndIndex, interval.beginIndex) }}</span>-->
+<!--        <span class="highlight" [matTooltip]="interval.violatedRegulation">{{ text.substring(interval.beginIndex, interval.endIndex) }}</span>-->
+<!--        <span *ngIf="interval === intervals[intervals.length - 1]">{{ text.substring(interval.endIndex) }}</span>-->
+<!--        <span *ngIf="interval !== intervals[intervals.length - 1]">{{ text.substring(interval.endIndex, intervals[intervals.indexOf(interval) + 1].beginIndex) }}</span>-->
+<!--        <span *ngIf="intervals.indexOf(interval) === intervals.length - 1">{{ text.substring(interval.endIndex) }}</span>-->
+<!--        <span *ngIf="intervals.indexOf(interval) === intervals.length - 1">{{ text.substring(interval.endIndex) }}</span>-->
+<!--        <span *ngIf="interval !== intervals[intervals.length - 1]">{{ text.substring(interval.endIndex) }}</span>-->
+<!--      </span>-->
+<!--</div>-->

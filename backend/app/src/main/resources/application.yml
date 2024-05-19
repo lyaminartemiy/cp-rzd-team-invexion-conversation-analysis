@@ -1,0 +1,46 @@
+server:
+  port: 8080
+#  ssl:
+#    enabled: false
+#    key-alias: dummy
+#    key-store: classpath:truststore.jks
+#    key-store-type: JKS
+#    key-store-password: changeit
+#    trust-store: classpath:truststore.jks
+#    trust-store-type: PKCS12
+#    trust-store-password: changeit
+spring:
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+#    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://hackaton-postgres:5432/conversation_analysis
+    username: postgres
+    password: root
+  servlet:
+    multipart:
+      max-file-size: 256MB
+      max-request-size: 256MB
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 100000
+            read-timeout: 100000
+yandex:
+  cloud:
+    nodeId: bt199s0r9lvhldfhdane
+    authorizationToken: Bearer t1.9euelZrOjpuVmZaSzMrNx5fJkZPMye3rnpWanI-MmpLHi86XkZ7Oz5DMjMfl8_cVM2FN-e9-Ql03_d3z91VhXk35735CXTf9zef1656Vmp6TzsuLyM_Hy5Wdi5mLnsnG7_zF656Vmp6TzsuLyM_Hy5Wdi5mLnsnG.y03xsCdYU6nyROwS7UZbOCmj3qHISQu6uGz0FoaQuq3CBjLhxiIMcIk7SUMeIvb2IDveEI3EWGLLxF_5knLCBQ
+    folderId: b1g8acouvuouo0vje21d
+
+minio:
+  url: "http://s3.lexa2hk.ru"
+  access:
+    key: "ExGRvXw4b9PjImAiBYZ1"
+    secret: "GCI9VPUM1rLmbSLKejjqGnBwaSjsd9D4CRiEcctH"
+  bucket:
+    name: "test"

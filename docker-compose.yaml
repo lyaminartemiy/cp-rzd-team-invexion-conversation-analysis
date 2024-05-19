@@ -21,7 +21,7 @@ services:
   
   hackaton-backend:
     build: ./backend
-    container_name: hackaton-backend
+    container_name: hackaton-backend2
     ports:
       - "8080:8080"
     networks:
@@ -37,7 +37,7 @@ services:
 
   hackaton-ml:
     build: ./ml
-    container_name: hackaton-ml
+    container_name: hackaton-ml2
     ports:
       - "8001:8000"
     networks:
@@ -46,6 +46,13 @@ services:
       - TZ=Europe/Moscow
     depends_on:
       - hackaton-postgres
+    restart: unless-stopped
+
+  hackaton-frontend:
+    build: ./frontend
+    container_name: hackaton-backend
+    ports:
+      - "4200:4200"
     restart: unless-stopped
 
 networks:

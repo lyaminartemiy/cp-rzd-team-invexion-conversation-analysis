@@ -1,0 +1,50 @@
+
+.mat-mdc-row.example-detail-row {
+  min-height: 0 !important;
+  height: 0 !important;
+}
+
+.mat-row.example-element-row:not(.example-expanded-row):hover {
+  background: yellow !important;
+}
+
+.mat-row.example-element-row:not(.example-expanded-row):active {
+  background: yellow;
+}
+example-detail-row{
+  min-height: 0;
+}
+.example-element-row .mat-cell {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+.mat-mdc-cell mdc-data-table__cell cdk-cell cdk-column-expandedDetail mat-column-expandedDetail ng-tns-c2964398639-3 ng-star-inserted {
+  width: max-content !important;
+}

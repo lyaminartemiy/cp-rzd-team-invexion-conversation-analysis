@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@include mat.core();
+@import "styles";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Roboto+Flex:opsz,wght@8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900;8..144,1000&display=swap');
+
+$my-primary: mat.define-palette($my_accent_palette, 100);
+$my-accent: mat.define-palette(mat.$amber-palette, 900);
+$my-warn: mat.define-palette(mat.$deep-orange-palette, 700);
+$my-fonts: mat.define-typography-config(
+  $font-family: 'Roboto Flex',
+);
+
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  ),
+  typography: $my-fonts,
+));
+
+//@include mat.core-theme($my-theme);
+@include mat.all-component-themes($my-theme);

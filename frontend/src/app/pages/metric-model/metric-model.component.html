@@ -1,0 +1,135 @@
+<div style="display:flex;  align-items: baseline; justify-content: space-between; width: 100%">
+        <h2 mat-dialog-title>Метрики</h2>
+        <button mat-icon-button color="primary" (click)="closeDialog()"><mat-icon style="transform: scale(1.3)" color="primary">clear</mat-icon></button>
+    </div>
+    <div *ngIf="allMetrics && !loading()" style="      margin-top: 50px;
+    margin-left: 105px;
+    margin-right: 105px;display: flex; height: fit-content;flex-direction: column; gap: 1rem; min-width: 200px; width: 50%;
+    min-height: 300px;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+    padding: 20px;">
+        <h2>Метрики по выбранным файлам</h2>
+                <p *ngFor="let i of allMetrics">{{ i.metric.title }}: {{i.value}} <mat-icon  color="primary" *ngIf="i.metric.formula" [matTooltip]="i.metric.formula" [matTooltipPosition]="'right'">flash_on</mat-icon></p>
+    </div>
+    <mat-progress-spinner  *ngIf="loading()"
+                           style="margin-top: 180px; align-self: center;"
+                           color="primary"
+                           mode="indeterminate"
+                           [diameter]="60"
+                           [strokeWidth]="6"
+                           [value]="80">
+    </mat-progress-spinner>
+    <div *ngIf="size>=20 && !loading2() && singleMetrics.length>0" style="  margin-left: 105px;
+    margin-right: 105px;display: flex; width: 100%; align-items: center; margin-top: 15px; justify-content: end;
+  gap: 30px">
+        <pagination-controls previousLabel="←" nextLabel="→" (pageChange)="paginate($event, filteredNegotiations)"></pagination-controls>
+        <mat-form-field appearance="outline" style="width: 250px">
+            <mat-label> Файлов на страницу:</mat-label>
+            <mat-select (selectionChange)="checkEvent($event)" [(value)]="size" (valueChange)="paginate(pageIndex, filteredNegotiations)">
+                <mat-option [value]="5">5</mat-option>
+                <mat-option [value]="10">10</mat-option>
+                <mat-option [value]="20">20</mat-option>
+                <mat-option [value]="50">50</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p>Всего: {{singleMetrics.length}}</p>
+    </div>
+    <mat-form-field *ngIf="!loading2() && singleMetrics.length>0" style="width: -webkit-fill-available; margin-top: 20px;margin-left: 105px;
+    margin-right: 105px;">
+        <mat-label>Filter</mat-label>
+        <input matInput [formControl]="filterInput">
+    </mat-form-field>
+    
+    <table *ngIf="!loading2() && singleMetrics.length>0"  [multiTemplateDataRows]="true"  style="margin-left: 105px;
+    margin-right: 105px;    box-shadow: none;
+    background-color: rgba(250, 250, 250, 0.8); width: -webkit-fill-available"  mat-table [dataSource]="dataSource | paginate: {itemsPerPage: size, currentPage: pageIndex, totalItems: filteredNegotiations.length}" class="mat-elevation-z8">
+        <ng-container matColumnDef="Файл">
+            <th mat-header-cell *matHeaderCellDef><b>Файл</b></th>
+            <td mat-cell *matCellDef="let element"><div style="display: flex; align-self: center"><p>{{ element.negotiation.fileName }}  <mat-icon (click)="loadMusic(element.negotiation.fileStorageId, element.negotiationText, element.id)" color="primary">play_circle_filled</mat-icon></p></div></td>
+        </ng-container>
+<!--        <ng-container matColumnDef="Тип файла">-->
+<!--            <th mat-header-cell *matHeaderCellDef><b>Тип файла</b></th>-->
+<!--            <td mat-cell *matCellDef="let element"> <p>{{ element.negotiation.fileType }} </p></td>-->
+<!--        </ng-container>-->
+        <ng-container matColumnDef="Дата загрузки">
+            <th mat-header-cell *matHeaderCellDef><b>Дата загрузки</b></th>
+            <td mat-cell *matCellDef="let element"><p>{{ element.negotiation.createdAt  | date:'dd.MM.yyyy HH:mm' }}</p></td>
+        </ng-container>
+        <ng-container matColumnDef="Есть нарушение">
+            <th mat-header-cell *matHeaderCellDef><b>Есть нарушение</b></th>
+            <td mat-cell *matCellDef="let element"><p>{{ element.isViolated ? 'Да' : 'Нет'}} </p></td>
+        </ng-container>
+        <ng-container matColumnDef="Тескт">
+            <th mat-header-cell   *matHeaderCellDef><b>Тескт</b></th>
+            <td mat-cell *matCellDef="let row;" style=";color: #1b3dff; cursor: pointer">
+                <button mat-stroked-button color="primary" (click)="checkOne(row.id)">Посмотреть</button>
+                <!--                            <button mat-raised-button color="primary"><h3>Посмотреть</h3></button>-->
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="expandedDetail">
+            <td colspan="5" mat-cell *matCellDef="let element">
+                <div class="example-element-detail" style="display: flex; flex-direction:column;"
+                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" >
+                <p style="padding: 10px !important;">Helium is a chemical element with symbol He and atomic number 2. It is a colorless, odorless, tasteless, non-toxic, inert, monatomic gas, the first in the noble gas group in the periodic table. Its boiling point is the lowest among all the elements.
+</p>
+                    <table *ngIf="!loading() && singleMetrics.length>0"   style="    box-shadow: none;
+    background-color: rgba(250, 250, 250, 0.8); width: 100%"  mat-table [dataSource]="dataSource | paginate: {itemsPerPage: size, currentPage: pageIndex, totalItems: filteredNegotiations.length}" class="mat-elevation-z8">
+                        <ng-container matColumnDef="Файл">
+                            <th mat-header-cell *matHeaderCellDef><b>Файл</b></th>
+                            <td mat-cell *matCellDef="let element"><div style="display: flex; align-self: center"><p>{{ element.negotiation.fileName }}  <mat-icon (click)="loadMusic(element.negotiation.fileStorageId, element.negotiationText, element.id)" color="primary">play_circle_filled</mat-icon></p></div></td>
+                        </ng-container>
+                        <ng-container matColumnDef="Дата загрузки">
+                            <th mat-header-cell *matHeaderCellDef><b>Дата загрузки</b></th>
+                            <td mat-cell *matCellDef="let element"><p>{{ element.negotiation.createdAt  | date:'dd.MM.yyyy HH:mm' }}</p></td>
+                        </ng-container>
+                        <ng-container matColumnDef="Есть нарушение">
+                            <th mat-header-cell *matHeaderCellDef><b>Есть нарушение</b></th>
+                            <td mat-cell *matCellDef="let element"><p>{{ element.isViolated ? 'Да' : 'Нет'}} </p></td>
+                        </ng-container>
+                        <ng-container matColumnDef="Тескт">
+                            <th mat-header-cell   *matHeaderCellDef><b>Тескт</b></th>
+                            <td mat-cell *matCellDef="let row;" style=";color: #1b3dff; cursor: pointer">
+                                <button mat-stroked-button color="primary" (click)="checkOne(row.id)">Посмотреть</button>
+                                <!--                            <button mat-raised-button color="primary"><h3>Посмотреть</h3></button>-->
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+            <td>
+        </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns"  class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element"></tr>
+        <tr mat-row *matRowDef="let row; columns: expandedDetail" class="example-detail-row"></tr>
+    </table>
+    <div *ngIf="!loading2()" style="margin-left: 105px;
+    margin-right: 105px;display: flex; width: -webkit-fill-available; align-items: center; margin-top: 15px; justify-content: end;
+  gap: 30px">
+        <pagination-controls previousLabel="←" nextLabel="→" (pageChange)="paginate($event, filteredNegotiations)"></pagination-controls>
+        <mat-form-field appearance="outline" style="width: 250px">
+            <mat-label> Файлов на страницу:</mat-label>
+            <mat-select (selectionChange)="checkEvent($event)" [(value)]="size" (valueChange)="paginate(pageIndex, filteredNegotiations)">
+                <mat-option [value]="5">5</mat-option>
+                <mat-option [value]="10">10</mat-option>
+                <mat-option [value]="20">20</mat-option>
+                <mat-option [value]="50">50</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p>Всего: {{singleMetrics.length}}</p>
+    </div>
+    <mat-progress-spinner  *ngIf="loading2()"
+                           style="margin-top: 180px; align-self: center;"
+                           color="primary"
+                           mode="indeterminate"
+                           [diameter]="60"
+                           [strokeWidth]="6"
+                           [value]="80">
+    </mat-progress-spinner>
+<!--</div>-->

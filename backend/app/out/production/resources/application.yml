@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+#    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/rzd-conversation
+    username: postgres
+    password: root
+
+minio:
+  url: "https://s3.lexa2hk.ru"
+  access:
+    key: "ExGRvXw4b9PjImAiBYZ1"
+    secret: "GCI9VPUM1rLmbSLKejjqGnBwaSjsd9D4CRiEcctH"
+  bucket:
+    name: "test"

@@ -1,0 +1,183 @@
+@use '@angular/material' as mat;
+@include mat.core();
+@import "node_modules/angular-notifier/styles";
+
+$my_accent_palette: (
+  50: #e5eaff,
+  100: #e31b1a,
+  200: #92a6ff,
+  300: #6682ff,
+  400: #4668ff,
+  500: #254dff,
+  600: #2146ff,
+  700: #1b3dff,
+  800: #1634ff,
+  900: #1b3dff,
+  A100: #ffffff,
+  A200: #f6f7ff,
+  A400: #c3c8ff,
+  A700: #aab0ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+$main-color: #e31b1a;
+@font-face {
+  font-family: 'Rail';
+  src: url("assets/RussianRail B Pro Regular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url("assets/IBMPlexSans-Medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+$my-primary: mat.define-palette($my_accent_palette, 100);
+$my-accent: mat.define-palette($my_accent_palette, 900);
+$my-warn: mat.define-palette(mat.$deep-orange-palette, 700);
+$my-fonts: mat.define-typography-config(
+  $font-family: 'Rail',
+);
+
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  ),
+  typography: $my-fonts,
+));
+
+@include mat.all-component-themes($my-theme);
+
+@font-face {
+  font-family: 'Rail';
+  src: url("assets/RussianRail G Pro Regular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+html, body { height: 100%; background-color: #e9eaed;}
+body { margin: 0; font-family: "Rail", sans-serif !important;}
+p{
+  font-size: 17px !important;
+  //font-weight: bolder !important;
+  color: rgb(128, 128, 128);
+  font-family: "IBM Plex Sans", sans-serif !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+a {
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-size: 18px !important;
+  display: block;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  padding: 0 !important;
+  color: black;
+  transition: 20ms;
+  cursor: pointer;
+  text-decoration: none;
+}
+a:hover {
+  color: #e31b1a;
+}
+h1 {
+  font-size: 40px  !important;
+  font-weight: bold !important;
+  font-family: "Rail", sans-serif !important;
+}
+h2 {
+  font-size: 24px  !important;
+  font-weight: bold !important;
+  font-family: "Rail", sans-serif !important;
+}
+h3 {
+  font-size: 17px  !important;
+  font-weight: bolder !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: "Rail", sans-serif !important;
+  color: rgba(255, 255, 255, .75);
+}
+h3:hover {
+  color: white;
+}
+.advanced-pie-legend.legend-items-container.legend-items.legend-item .item-value {
+  margin-top: 10px !important;
+}
+.advanced-pie-legend .total-value {
+  margin-top: 10px !important;
+}
+.advanced-pie-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.advanced-pie-legend .legend-items-container .legend-items{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.advanced-pie-legend .legend-items-container .legend-items .legend-item .item-label {
+  margin-top: 0 !important;
+}
+.advanced-pie-legend .legend-items-container .legend-items {
+  overflow: visible !important;
+}
+.ngx-pagination {
+  padding-left: 0px !important;
+}
+
+.ngx-pagination .current,
+.btn-info {
+  background: #17a2b8 !important;
+  border: transparent !important;
+  border-radius: 20px !important;
+}
+
+.ngx-pagination .current:hover {
+  background: #17a2b8 !important;
+  border-radius: 20px !important;
+  border: transparent !important;
+}
+.ngx-pagination .current{
+  background-color: #e31b1a !important;
+  &:hover {
+    background-color: #e31b1a !important;
+
+  }
+}
+.ngx-pagination {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.notifier__notification-message ng-star-inserted {
+  color: white !important;
+}
+.mat-mdc-row mdc-data-table__row cdk-row example-element-row ng-tns-c2964398639-3 ng-star-inserted {
+  width: 0;
+}
+.mat-mdc-dialog-container .mdc-dialog__surface{ background-color:  #e9eaed !important;}

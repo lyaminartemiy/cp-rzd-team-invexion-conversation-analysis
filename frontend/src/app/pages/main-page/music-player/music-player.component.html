@@ -1,0 +1,22 @@
+<div style="display:flex; flex-direction: column; gap: .2rem; padding: 15px; align-items: start; min-width: 800px;">
+    <div style="display:flex; align-items: baseline; justify-content: space-between; width: 100%">
+        <h2 mat-dialog-title>Воспроизведение</h2>
+        <button mat-icon-button color="primary" (click)="closeDialog()"><mat-icon style="transform: scale(1.3)" color="primary">clear</mat-icon></button>
+    </div>
+<audio controls style="align-self: center">
+    <source [src]="'http://backendhackaton.lexa2hk.ru/api/negotiations/files/' + data.id" type="audio/mp3" />
+    Your browser does not support the audio element.
+</audio>
+<!--    <p style="color: red">{{data.text}}</p>-->
+    <div style="display:flex;flex-wrap: wrap;">
+    <span *ngFor="let interval of metrics">
+                <span>{{ data.text.substring(lastEndIndex, interval.beginIndex) }}</span>
+                <span class="highlight" [matTooltip]="interval.violatedRegulation">{{ data.text.substring(interval.beginIndex, interval.endIndex) }}</span>
+                <span *ngIf="interval === metrics[metrics.length - 1]">{{ data.text.substring(interval.endIndex) }}</span>
+                <span *ngIf="interval !== metrics[metrics.length - 1]">{{ data.text.substring(interval.endIndex, metrics[metrics.indexOf(interval) + 1].beginIndex) }}</span>
+                <span *ngIf="metrics.indexOf(interval) === metrics.length - 1">{{ data.text.substring(interval.endIndex) }}</span>
+                <span *ngIf="metrics.indexOf(interval) === metrics.length - 1">{{ data.text.substring(interval.endIndex) }}</span>
+                <span *ngIf="interval !== metrics[metrics.length - 1]">{{ data.text.substring(interval.endIndex) }}</span>
+              </span>
+    </div>
+</div>
